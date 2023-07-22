@@ -402,19 +402,19 @@ public class Summon {
             double z3 = z + 0.5 * r;
 
             // 生成第一条边
-            for(double i=x1; i>=x2; i-=0.5){
+            for(double i=x1; i>=x2; i-=0.2){
                 double j = (i - x1) / (x2 - x1) * (z2 - z1) + z1;
                 locations.add(new Location(world, i, y, j));
             }
 
             // 生成第二条边
-            for(double i=x2; i<=x3; i+=0.5){
+            for(double i=x2; i<=x3; i+=0.2){
                 double j = (i - x2) / (x3 - x2) * (z3 - z2) + z2;
                 locations.add(new Location(world, i, y, j));
             }
 
             // 生成第三条边
-            for(double j=z1; j<=z3; j+=0.5){
+            for(double j=z1; j<=z3; j+=0.2){
                 double i = (j - z1) / (z3 - z1) * (x3 - x1) + x1;
                 locations.add(new Location(world, i, y, j));
             }
