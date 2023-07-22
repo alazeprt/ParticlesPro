@@ -3,7 +3,7 @@ package com.alazeprt;
 import org.bukkit.Particle;
 
 public class isValid {
-    public static boolean isInteger(String... nums) {
+    public static boolean integer(String... nums) {
         if (nums == null) {
             return false;
         }
@@ -25,3 +25,5 @@ public class isValid {
         return false;
     }
 }
+
+

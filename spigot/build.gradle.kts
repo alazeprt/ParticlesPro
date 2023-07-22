@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.alazeprt"
@@ -14,4 +13,12 @@ repositories {
 }
 
 dependencies {
+    implementation("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    implementation("org.jetbrains:annotations:24.0.1")
+    implementation(project(":common"))
+}
+
+tasks.jar {
+    archiveBaseName.set("ParticlesPro-Spigot")
+    from(project(":common").projectDir.resolve("build/classes/java/main"))
 }
