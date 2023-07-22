@@ -52,7 +52,7 @@ public class Summon {
             }
             double dy = Math.tan(rad);
 
-            for (int i = 0; i < length; i++) {
+            for (double i = 0; i < length; i+=0.2) {
 
                 double px = x + (dx * i);
                 double py = y + (dy * i);
