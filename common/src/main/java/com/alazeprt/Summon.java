@@ -1,9 +1,5 @@
 package com.alazeprt;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,24 +7,16 @@ public class Summon {
     private final double x;
     private final double y;
     private final double z;
-    private final World world;
+    private final String world;
     public one one;
     public two two;
-    public Summon(double x, double y, double z, World world) {
+    public Summon(double x, double y, double z, String world) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.world = world;
         one = new one();
         two = new two();
-    }
-
-    public Summon(Player player) {
-        this.x = player.getLocation().getX();
-        this.y = player.getLocation().getY();
-        this.z = player.getLocation().getZ();
-        this.world = player.getWorld();
-        one = new one();
     }
 
     public Summon(Location location) {

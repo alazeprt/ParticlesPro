@@ -1,5 +1,6 @@
 package com.alazeprt;
 
+import com.alazeprt.method.LocationConvert;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import sun.util.locale.LocaleObjectCache;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,11 +97,12 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
         } else if(args.length == 5 && args[1].equals("vertical") && isValid.integer(args[2], args[3], args[4])) {
             Summon summon;
             if(isPlayer) {
-                summon = new Summon((Player) player);
+                summon = new Summon(LocationConvert.toThisLocation((Player) player));
             } else {
-                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+                summon = new Summon(LocationConvert.toThisLocation(((BlockCommandSender) player).getBlock().getLocation()));
             }
-            List<Location> list = summon.one.vertical(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+            List<com.alazeprt.Location> alist = summon.one.vertical(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+            List<Location> list = LocationConvert.toBukkitLocation(alist);
             player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
             Thread thread = new Thread(() -> {
                 for(Location location : list) {
@@ -117,11 +120,12 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
         } else if(args.length == 6 && args[1].equals("curve") && isValid.integer(args[2], args[4], args[5]) && Direction.isExist(args[3].toUpperCase())) {
             Summon summon;
             if(isPlayer) {
-                summon = new Summon((Player) player);
+                summon = new Summon(LocationConvert.toThisLocation((Player) player));
             } else {
-                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+                summon = new Summon(LocationConvert.toThisLocation(((BlockCommandSender) player).getBlock().getLocation()));
             }
-            List<Location> list = summon.one.curve(Integer.parseInt(args[2]), Direction.valueOf(args[3].toUpperCase()), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+            List<com.alazeprt.Location> alist = summon.one.curve(Integer.parseInt(args[2]), Direction.valueOf(args[3].toUpperCase()), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+            List<Location> list = LocationConvert.toBukkitLocation(alist);
             player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
             Thread thread = new Thread(() -> {
                 for(Location location : list) {
@@ -139,11 +143,12 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
         } else if(args.length == 6 && args[1].equals("cross") && isValid.integer(args[2], args[4], args[5]) && Direction.isExist(args[3].toUpperCase())) {
             Summon summon;
             if(isPlayer) {
-                summon = new Summon((Player) player);
+                summon = new Summon(LocationConvert.toThisLocation((Player) player));
             } else {
-                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+                summon = new Summon(LocationConvert.toThisLocation(((BlockCommandSender) player).getBlock().getLocation()));
             }
-            List<Location> list = summon.one.cross(Integer.parseInt(args[2]), Direction.valueOf(args[3].toUpperCase()), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+            List<com.alazeprt.Location> alist = summon.one.cross(Integer.parseInt(args[2]), Direction.valueOf(args[3].toUpperCase()), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+            List<Location> list = LocationConvert.toBukkitLocation(alist);
             player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
             Thread thread = new Thread(() -> {
                 for(Location location : list) {
@@ -161,11 +166,12 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
         } else if(args.length == 7 && args[1].equals("wavy") && isValid.integer(args[2], args[3], args[4], args[5], args[6])) {
             Summon summon;
             if(isPlayer) {
-                summon = new Summon((Player) player);
+                summon = new Summon(LocationConvert.toThisLocation((Player) player));
             } else {
-                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+                summon = new Summon(LocationConvert.toThisLocation(((BlockCommandSender) player).getBlock().getLocation()));
             }
-            List<Location> list = summon.one.wavy(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
+            List<com.alazeprt.Location> alist = summon.one.wavy(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
+            List<Location> list = LocationConvert.toBukkitLocation(alist);
             player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
             Thread thread = new Thread(() -> {
                 for(Location location : list) {
@@ -195,20 +201,21 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
         } else if(args.length == 3 && args[1].equals("circle") || args[1].equals("square") || args[1].equals("triangle") && isValid.integer(args[2])) {
             Summon summon;
             if(isPlayer) {
-                summon = new Summon((Player) player);
+                summon = new Summon(LocationConvert.toThisLocation((Player) player));
             } else {
-                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+                summon = new Summon(LocationConvert.toThisLocation(((BlockCommandSender) player).getBlock().getLocation()));
             }
-            List<Location> list;
+            List<com.alazeprt.Location> alist;
             if(args[1].equals("circle")) {
-                list = summon.two.circle(Integer.parseInt(args[2]));
+                alist = summon.two.circle(Integer.parseInt(args[2]));
             } else if(args[1].equals("square")) {
-                list = summon.two.square(Integer.parseInt(args[2]));
+                alist = summon.two.square(Integer.parseInt(args[2]));
             } else if(args[1].equals("triangle")) {
-                list = summon.two.triangle(Integer.parseInt(args[2]));
+                alist = summon.two.triangle(Integer.parseInt(args[2]));
             } else {
-                list = new ArrayList<>();
+                alist = new ArrayList<>();
             }
+            List<Location> list = LocationConvert.toBukkitLocation(alist);
             player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
             Thread thread = new Thread(() -> {
                 for (Location location : list) {
