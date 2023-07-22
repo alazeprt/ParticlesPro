@@ -25,6 +25,7 @@ public class Summon {
         this.z = location.getZ();
         this.world = location.getWorld();
         one = new one();
+        two = new two();
     }
 
     public class one {
