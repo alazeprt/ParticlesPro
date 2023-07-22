@@ -1,0 +1,7 @@
+name: ParticlesPro
+main: com.alazeprt.ParticlesPro
+version: 1.1
+api-version: 1.13
+commands:
+  particlex:
+    description: ParticlesPro插件主指令
