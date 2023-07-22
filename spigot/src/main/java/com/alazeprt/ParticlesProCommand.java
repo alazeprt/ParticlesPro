@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import sun.util.locale.LocaleObjectCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,12 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         List<String> list = new ArrayList<>();
         if(args.length == 1) {
+            list.add("help");
             list.add("1");
             list.add("2");
             list.add("3");
         } else if(args.length == 2) {
+            list.add("help");
             if(args[0].equals("1")) {
                 list.add("vertical");
                 list.add("curve");
@@ -183,7 +186,44 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
     }
 
     private void two(CommandSender player, World world, String[] args) {
-
+        boolean isPlayer = player instanceof Player;
+        if(args.length == 2 && args[1].equals("help")) {
+            player.sendMessage(ParticlesPro.getPrefix() + " §b二维粒子生成帮助");
+            player.sendMessage("§b/particlex 2 circle <半径>  §a- 在自己的中心生成一个圆形");
+            player.sendMessage("§b/particlex 2 square <边长的一半>  §a- 在自己的中心生成一个正方形");
+            player.sendMessage("§b/particlex 2 triangle <底(高)的一半>  §a- 在自己的中心生成一个等边三角形");
+        } else if(args.length == 3 && args[1].equals("circle") || args[1].equals("square") || args[1].equals("triangle") && isValid.integer(args[2])) {
+            Summon summon;
+            if(isPlayer) {
+                summon = new Summon((Player) player);
+            } else {
+                summon = new Summon(((BlockCommandSender) player).getBlock().getLocation());
+            }
+            List<Location> list;
+            if(args[1].equals("circle")) {
+                list = summon.two.circle(Integer.parseInt(args[2]));
+            } else if(args[1].equals("square")) {
+                list = summon.two.square(Integer.parseInt(args[2]));
+            } else if(args[1].equals("triangle")) {
+                list = summon.two.triangle(Integer.parseInt(args[2]));
+            } else {
+                list = new ArrayList<>();
+            }
+            player.sendMessage("§1[" + ParticlesPro.getPrefix() + "§b] §a正在生成粒子中...");
+            Thread thread = new Thread(() -> {
+                for (Location location : list) {
+                    String version = Bukkit.getServer().getVersion();
+                    String[] versionArray = version.split("\\.");
+                    int secondVersion = Integer.parseInt(versionArray[1]);
+                    if (secondVersion >= 13) {
+                        world.spawnParticle(Particle.END_ROD, location, 2, 0, 0, 0, 0, null, true);
+                    } else {
+                        world.spawnParticle(Particle.END_ROD, location, 2, 0, 0, 0, 0);
+                    }
+                }
+            });
+            thread.start();
+        }
     }
 
     private void three(CommandSender player, World world, String[] args) {

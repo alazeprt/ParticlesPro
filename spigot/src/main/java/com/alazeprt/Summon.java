@@ -13,12 +13,14 @@ public class Summon {
     private final double z;
     private final World world;
     public one one;
+    public two two;
     public Summon(double x, double y, double z, World world) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.world = world;
         one = new one();
+        two = new two();
     }
 
     public Summon(Player player) {
@@ -339,88 +341,98 @@ public class Summon {
 
     }
 
+    public class two {
+        private final double x;
+        private final double y;
+        private final double z;
 
-
-    public List<Location> circle(int r){
-
-        List<Location> locations = new ArrayList<>();
-
-        for(double a = 0; a < 360; a+=0.5){
-            double angle = Math.toRadians(a);
-            double x2 = x + r * Math.cos(angle);
-            double z2 = z + r * Math.sin(angle);
-
-            Location loc = new Location(world, x2, y, z2);
-            locations.add(loc);
+        two() {
+            this.x = Summon.this.x;
+            this.y = Summon.this.y;
+            this.z = Summon.this.z;
         }
 
-        return locations;
+        List<Location> circle(int r){
 
-    }
+            List<Location> locations = new ArrayList<>();
 
-    public List<Location> square(int r){
+            for(double a = 0; a < 360; a+=0.5){
+                double angle = Math.toRadians(a);
+                double x2 = x + r * Math.cos(angle);
+                double z2 = z + r * Math.sin(angle);
 
-        List<Location> locations = new ArrayList<>();
+                Location loc = new Location(world, x2, y, z2);
+                locations.add(loc);
+            }
 
-        // 计算正方形的4个顶点
-        double x1 = x - r;
-        double x2 = x + r;
-        double z1 = z - r;
-        double z2 = z + r;
+            return locations;
 
-        // 生成4条边
-        for(double i=x1; i<=x2; i+=0.1){
-            Location loc1 = new Location(world, i, y, z1);
-            Location loc2 = new Location(world, i, y, z2);
-            locations.add(loc1);
-            locations.add(loc2);
         }
 
-        for(double j=z1; j<=z2; j+=0.1){
-            Location loc1 = new Location(world, x1, y, j);
-            Location loc2 = new Location(world, x2, y, j);
-            locations.add(loc1);
-            locations.add(loc2);
+        List<Location> square(int r){
+
+            List<Location> locations = new ArrayList<>();
+
+            // 计算正方形的4个顶点
+            double x1 = x - r;
+            double x2 = x + r;
+            double z1 = z - r;
+            double z2 = z + r;
+
+            // 生成4条边
+            for(double i=x1; i<=x2; i+=0.1){
+                Location loc1 = new Location(world, i, y, z1);
+                Location loc2 = new Location(world, i, y, z2);
+                locations.add(loc1);
+                locations.add(loc2);
+            }
+
+            for(double j=z1; j<=z2; j+=0.1){
+                Location loc1 = new Location(world, x1, y, j);
+                Location loc2 = new Location(world, x2, y, j);
+                locations.add(loc1);
+                locations.add(loc2);
+            }
+
+            return locations;
+
         }
 
-        return locations;
+        List<Location> triangle(int r){
 
-    }
+            List<Location> locations = new ArrayList<>();
 
-    public List<Location> triangle(int r){
+            // 计算等边三角形的三个顶点
+            double x1 = x;
+            double z1 = z - r;
 
-        List<Location> locations = new ArrayList<>();
+            double x2 = x - (Math.sqrt(3)/2) * r;
+            double z2 = z + 0.5 * r;
 
-        // 计算等边三角形的三个顶点
-        double x1 = x;
-        double z1 = z - r;
+            double x3 = x + (Math.sqrt(3)/2) * r;
+            double z3 = z + 0.5 * r;
 
-        double x2 = x - (Math.sqrt(3)/2) * r;
-        double z2 = z + 0.5 * r;
+            // 生成第一条边
+            for(double i=x1; i>=x2; i-=0.5){
+                double j = (i - x1) / (x2 - x1) * (z2 - z1) + z1;
+                locations.add(new Location(world, i, y, j));
+            }
 
-        double x3 = x + (Math.sqrt(3)/2) * r;
-        double z3 = z + 0.5 * r;
+            // 生成第二条边
+            for(double i=x2; i<=x3; i+=0.5){
+                double j = (i - x2) / (x3 - x2) * (z3 - z2) + z2;
+                locations.add(new Location(world, i, y, j));
+            }
 
-        // 生成第一条边
-        for(double i=x1; i>=x2; i-=0.5){
-            double j = (i - x1) / (x2 - x1) * (z2 - z1) + z1;
-            locations.add(new Location(world, i, y, j));
+            // 生成第三条边
+            for(double j=z1; j<=z3; j+=0.5){
+                double i = (j - z1) / (z3 - z1) * (x3 - x1) + x1;
+                locations.add(new Location(world, i, y, j));
+            }
+
+            return locations;
+
         }
-
-        // 生成第二条边
-        for(double i=x2; i<=x3; i+=0.5){
-            double j = (i - x2) / (x3 - x2) * (z3 - z2) + z2;
-            locations.add(new Location(world, i, y, j));
-        }
-
-        // 生成第三条边
-        for(double j=z1; j<=z3; j+=0.5){
-            double i = (j - z1) / (z3 - z1) * (x3 - x1) + x1;
-            locations.add(new Location(world, i, y, j));
-        }
-
-        return locations;
-
     }
 
     List<Location> circle_xz(int length, int direction, int angle, int height, int group) {
