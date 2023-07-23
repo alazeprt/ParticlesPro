@@ -1,6 +1,6 @@
 package com.alazeprt.method;
 
-import com.alazeprt.Location;
+import com.alazeprt.util.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

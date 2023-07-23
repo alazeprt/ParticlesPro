@@ -1,4 +1,4 @@
-package com.alazeprt;
+package com.alazeprt.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Summon {
             this.y = Summon.this.y;
             this.z = Summon.this.z;
         }
-        List<Location> vertical(int length, int direction, int angle) {
+        public List<Location> vertical(int length, int direction, int angle) {
 
             List<Location> locations = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class Summon {
 
         }
 
-        List<Location> wavy(int length, int direction, int angle, int height, int group) {
+        public List<Location> wavy(int length, int direction, int angle, int height, int group) {
 
             List<Location> locations = new ArrayList<>();
 
@@ -102,7 +102,7 @@ public class Summon {
 
         }
 
-        List<Location> cross(int length, Direction direction, int height, int group) {
+        public List<Location> cross(int length, Direction direction, int height, int group) {
             List<Location> locations = new ArrayList<>();
             if(direction.equals(Direction.EAST)) {
                 int groups = length / group;
@@ -226,7 +226,7 @@ public class Summon {
             return locations;
         }
 
-        List<Location> curve(int length, Direction direction, int height, int group) {
+        public List<Location> curve(int length, Direction direction, int height, int group) {
             List<Location> locations = new ArrayList<>();
             if (direction.equals(Direction.EAST)) {
                 int groups = length / group;
@@ -341,7 +341,7 @@ public class Summon {
             this.z = Summon.this.z;
         }
 
-        List<Location> circle(int r){
+        public List<Location> circle(int r){
 
             List<Location> locations = new ArrayList<>();
 
@@ -358,7 +358,7 @@ public class Summon {
 
         }
 
-        List<Location> square(int r){
+        public List<Location> square(int r){
 
             List<Location> locations = new ArrayList<>();
 
@@ -387,7 +387,7 @@ public class Summon {
 
         }
 
-        List<Location> triangle(int r){
+        public List<Location> triangle(int r){
 
             List<Location> locations = new ArrayList<>();
 

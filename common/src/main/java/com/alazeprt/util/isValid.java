@@ -1,4 +1,4 @@
-package com.alazeprt;
+package com.alazeprt.util;
 
 import org.bukkit.Particle;
 

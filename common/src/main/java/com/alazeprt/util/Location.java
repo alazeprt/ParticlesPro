@@ -1,4 +1,4 @@
-package com.alazeprt;
+package com.alazeprt.util;
 
 public class Location {
     private final double x;
