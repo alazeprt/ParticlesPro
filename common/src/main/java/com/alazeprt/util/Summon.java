@@ -10,6 +10,7 @@ public class Summon {
     private final String world;
     public one one;
     public two two;
+    public three three;
     public Summon(double x, double y, double z, String world) {
         this.x = x;
         this.y = y;
@@ -17,6 +18,7 @@ public class Summon {
         this.world = world;
         one = new one();
         two = new two();
+        three = new three();
     }
 
     public Summon(Location location) {
@@ -26,6 +28,7 @@ public class Summon {
         this.world = location.getWorld();
         one = new one();
         two = new two();
+        three = new three();
     }
 
     public class one {
@@ -458,5 +461,178 @@ public class Summon {
 
         return locations;
 
+    }
+
+    public class three {
+        private final double x;
+        private final double y;
+        private final double z;
+        three() {
+            this.x = Summon.this.x;
+            this.y = Summon.this.y;
+            this.z = Summon.this.z;
+        }
+
+        public List<Location> soild_cube(int length, int direction) {
+
+            List<Location> locations = new ArrayList<>();
+
+            // 立方体中心坐标
+            double xCenter = x;
+            double yCenter = y;
+            double zCenter = z;
+
+            for(double xPos = 0; xPos < length; xPos+=0.5) {
+                for(double yPos = 0; yPos < length; yPos+=0.5) {
+                    for(double zPos = 0; zPos < length; zPos+=0.5) {
+
+                        // 原始坐标
+                        double x0 = xPos - length / 2.0;
+                        double y0 = yPos - length / 2.0;
+                        double z0 = zPos - length / 2.0;
+
+                        // 旋转变换
+                        double x1 = x0 * Math.cos(Math.toRadians(direction)) - z0 * Math.sin(Math.toRadians(direction));
+                        double z1 = x0 * Math.sin(Math.toRadians(direction)) + z0 * Math.cos(Math.toRadians(direction));
+
+                        // 计算旋转后的坐标
+                        double xCoord = xCenter + x1;
+                        double yCoord = yCenter + y0;
+                        double zCoord = zCenter + z1;
+
+                        Location loc = new Location("world", xCoord, yCoord, zCoord);
+                        locations.add(loc);
+
+                    }
+                }
+            }
+
+            return locations;
+        }
+
+        public List<Location> hollow_cube(int length, int direction) {
+            List<Location> locations = new ArrayList<>();
+
+            // 立方体中心坐标
+            double xCenter = x;
+            double yCenter = y;
+            double zCenter = z;
+
+            // 计算旋转变换
+            for(double xPos = 0; xPos < length; xPos+=0.5) {
+                for(double yPos = 0; yPos < length; yPos+=0.5) {
+                    for(double zPos = 0; zPos < length; zPos+=0.5) {
+
+                        // 原始坐标
+                        double x0 = xPos - length / 2.0;
+                        double y0 = yPos - length / 2.0;
+                        double z0 = zPos - length / 2.0;
+
+                        // 旋转变换
+                        double x1 = x0 * Math.cos(Math.toRadians(direction)) - z0 * Math.sin(Math.toRadians(direction));
+                        double z1 = x0 * Math.sin(Math.toRadians(direction)) + z0 * Math.cos(Math.toRadians(direction));
+
+                        // 计算旋转后的坐标
+                        double xCoord = xCenter + x1;
+                        double yCoord = yCenter + y0;
+                        double zCoord = zCenter + z1;
+
+                        // 判断是否在外壳上
+                        if(isOnShell(xPos, yPos, zPos, length)) {
+                            Location loc = new Location("world", xCoord, yCoord, zCoord);
+                            locations.add(loc);
+                        }
+
+                    }
+                }
+            }
+
+            return locations;
+        }
+
+        public List<Location> sphere(int length, int direction) {
+
+            List<Location> locations = new ArrayList<>();
+
+            // 球心坐标
+            double xCenter = x;
+            double yCenter = y;
+            double zCenter = z;
+
+            // 球半径
+            double r = length / 2.0;
+
+            // 循环球坐标
+            for (double i = 0; i < Math.PI; i += Math.PI/(length*5)) {
+                for (double j = 0; j < 2*Math.PI; j += 2*Math.PI/(length*5)) {
+
+                    // 球坐标转直角坐标
+                    double x0 = r * Math.sin(i) * Math.cos(j);
+                    double y0 = r * Math.sin(i) * Math.sin(j);
+                    double z0 = r * Math.cos(i);
+
+                    // 旋转变换
+                    double x1 = x0 * Math.cos(Math.toRadians(direction)) - z0 * Math.sin(Math.toRadians(direction));
+                    double z1 = x0 * Math.sin(Math.toRadians(direction)) + z0 * Math.cos(Math.toRadians(direction));
+
+                    // 计算坐标
+                    double xCoord = xCenter + x1;
+                    double yCoord = yCenter + y0;
+                    double zCoord = zCenter + z1;
+
+                    Location loc = new Location("world", xCoord, yCoord, zCoord);
+                    locations.add(loc);
+
+                }
+            }
+
+            return locations;
+
+        }
+
+        public List<Location> cylinder(int radius, int height) {
+            List<Location> locations = new ArrayList<>();
+
+            // 圆柱体中心坐标
+            double xCenter = x;
+            double yCenter = y;
+            double zCenter = z;
+
+            // 指定的圆柱半径和高度
+            double cylRadius = radius;
+            double cylHeight = height;
+
+            // 计算旋转变换矩阵
+            double rotateX = Math.cos(Math.toRadians(0));
+            double rotateZ = Math.sin(Math.toRadians(0));
+
+            // 生成侧面
+            for(double theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / 40) {
+                for(double h = 0; h < cylHeight; h += cylHeight / 40) {
+
+                    double x0 = cylRadius * Math.cos(theta);
+                    double z0 = cylRadius * Math.sin(theta);
+
+                    double x1 = x0 * rotateX - z0 * rotateZ;
+                    double z1 = x0 * rotateZ + z0 * rotateX;
+
+                    double x = xCenter + x1;
+                    double y = yCenter + h;
+                    double z = zCenter + z1;
+
+                    Location loc = new Location("world", x, y, z);
+                    locations.add(loc);
+                }
+            }
+
+            return locations;
+        }
+
+        private boolean isOnShell(double xCoord, double yCoord, double zCoord, int length) {
+            double shell = 0.5;
+            return xCoord < shell || xCoord >= length - shell
+                    || yCoord < shell || yCoord >= length - shell
+                    || zCoord < shell || zCoord >= length - shell;
+        }
     }
 }

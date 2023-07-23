@@ -18,7 +18,7 @@ public class ParticlesProCommand implements CommandExecutor, TabCompleter {
             BasicEvent event = new BasicEvent();
             CommandEvent cevent = new CommandEvent();
             BasicHandler handler = new BasicHandler(event, cevent);
-            handler.handle(LocationConvert.toThisLocation(player), args);
+            handler.handle(LocationConvert.toThisLocation(player), args, player.getName());
         } else if(sender instanceof BlockCommandSender) {
             BlockCommandSender commandSender = (BlockCommandSender) sender;
             BasicEvent event = new BasicEvent();

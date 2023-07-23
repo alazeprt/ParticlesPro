@@ -19,7 +19,9 @@ public class BasicEvent implements Listener {
     public void sendPlayerMessage(String player, String string) {
         Collection<? extends Player> collection = Bukkit.getOnlinePlayers();
         for(Player player1 : collection) {
-            player1.sendMessage(string);
+            if(player1.getName().equals(player)) {
+                player1.sendMessage(string);
+            }
         }
     }
 

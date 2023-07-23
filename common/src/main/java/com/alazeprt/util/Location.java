@@ -1,5 +1,8 @@
 package com.alazeprt.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location {
     private final double x;
     private final double y;

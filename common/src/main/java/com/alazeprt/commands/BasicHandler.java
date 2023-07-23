@@ -28,7 +28,7 @@ public class BasicHandler {
             } else if(args[0].equals("2")) {
                 commandListener.TwoBlockHandle(location, args);
             } else if(args[0].equals("3")) {
-                listener.sendMessage(location, "§1[" + Prefix.get() + "§b] §c此维度仍在制作中...");
+                commandListener.ThreeBlockHandle(location, args);
             } else {
                 listener.sendMessage(location, "§1[" + Prefix.get() + "§b] §c未知的维度! 维度有: 1,2,3");
             }
@@ -52,7 +52,7 @@ public class BasicHandler {
             } else if(args[0].equals("2")) {
                 commandListener.TwoPlayerHandle(location, args, player);
             } else if(args[0].equals("3")) {
-                listener.sendPlayerMessage(player, "§1[" + Prefix.get() + "§b] §c此维度仍在制作中...");
+                commandListener.ThreePlayerHandle(location, args, player);
             } else {
                 listener.sendPlayerMessage(player, "§1[" + Prefix.get() + "§b] §c未知的维度! 维度有: 1,2,3");
             }

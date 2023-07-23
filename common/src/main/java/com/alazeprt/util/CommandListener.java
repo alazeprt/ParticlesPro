@@ -5,4 +5,6 @@ public interface CommandListener {
     void OnePlayerHandle(Location location, String[] args, String player);
     void TwoBlockHandle(Location location, String[] args);
     void TwoPlayerHandle(Location location, String[] args, String player);
+    void ThreeBlockHandle(Location location, String[] args);
+    void ThreePlayerHandle(Location location, String[] args, String player);
 }
