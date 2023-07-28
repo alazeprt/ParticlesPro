@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = "com.alazeprt"
-version = "1.1"
+group = project.properties.get("group")!!
+version = project.properties.get("version")!!
 
 repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
