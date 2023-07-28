@@ -344,21 +344,36 @@ public class Summon {
             this.z = Summon.this.z;
         }
 
-        public List<Location> circle(int r){
+        public List<Location> circle(int r, int angle){
 
             List<Location> locations = new ArrayList<>();
 
-            for(double a = 0; a < 360; a+=0.5){
-                double angle = Math.toRadians(a);
-                double x2 = x + r * Math.cos(angle);
-                double z2 = z + r * Math.sin(angle);
+            for(double a = 0; a < 360; a += 0.5){
 
-                Location loc = new Location(world, x2, y, z2);
+                // 计算原始坐标
+                double radians = Math.toRadians(a);
+                double x0 = x + r * Math.cos(radians);
+                double z0 = z + r * Math.sin(radians);
+                double y0 = y;
+
+                // 计算原始偏移量
+                double offset = r * Math.tan(Math.toRadians(angle));
+
+                // 计算弧度比例
+                double ratio = radians / (Math.PI / 2);
+
+                // 结合原始偏移量获得最终偏移量
+                offset *= ratio;
+
+                double x2 = x0 - offset * Math.sin(radians);
+                double z2 = z0 + offset * Math.cos(radians);
+                double y2 = y0 - offset * Math.cos(radians);
+
+                Location loc = new Location(world, x2, y2, z2);
                 locations.add(loc);
             }
 
             return locations;
-
         }
 
         public List<Location> square(int r){
@@ -425,42 +440,6 @@ public class Summon {
             return locations;
 
         }
-    }
-
-    List<Location> circle_xz(int length, int direction, int angle, int height, int group) {
-
-        List<Location> locations = new ArrayList<>();
-
-        // 水平和垂直增量
-        double dx = Math.cos(Math.toRadians(direction));
-        double dz = Math.sin(Math.toRadians(direction));
-        double dy = Math.tan(Math.toRadians(angle));
-
-        // 波数
-        int n = length / group;
-
-        // 幅度系数
-        double amp = (double) height / 2;
-
-        for (int i = 0; i < length; i++) {
-
-            // xz平面波动
-            double offsetXZ = amp * Math.sin(i * 2 * Math.PI / n);
-
-            // y轴波动
-            double offsetY = amp * Math.cos(i * 2 * Math.PI / n);
-
-            double px = x + (dx * i) + offsetXZ;
-            double py = y + offsetY + (dy * i);
-            double pz = z + (dz * i) + offsetXZ;
-
-            Location loc = new Location(world, px, py, pz);
-            locations.add(loc);
-
-        }
-
-        return locations;
-
     }
 
     public class three {
@@ -607,8 +586,8 @@ public class Summon {
             double rotateZ = Math.sin(Math.toRadians(0));
 
             // 生成侧面
-            for(double theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / 40) {
-                for(double h = 0; h < cylHeight; h += cylHeight / 40) {
+            for (double theta = 0; theta < 2 * Math.PI; theta += 2 * Math.PI / 40) {
+                for (double h = 0; h < cylHeight; h += cylHeight / 40) {
 
                     double x0 = cylRadius * Math.cos(theta);
                     double z0 = cylRadius * Math.sin(theta);
